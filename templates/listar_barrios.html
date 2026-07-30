@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Barrios - Ordenamiento Territorial</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'listar_parroquias' %}">Listar Parroquias</a> |
+        <a href="{% url 'listar_barrios' %}">Listar Barrios</a> |
+        <a href="{% url 'crear_parroquia' %}">Crear Parroquia</a> |
+        <a href="{% url 'crear_barrio' %}">Crear Barrio</a> |
+        <a href="/admin/">Administración</a>
+    </nav>
+    <hr>
+    
+    <h1>Listado de Barrios / Ciudadelas</h1>
+    <ul>
+        {% for barrio in barrios %}
+            <li>
+                <strong>{{ barrio.nombre }}</strong> - Pertenece a: {{ barrio.parroquia.nombre }}
+                - <a href="{% url 'editar_barrio' barrio.id %}">Editar</a>
+                <br>
+                Detalles: {{ barrio.num_viviendas }} viviendas, {{ barrio.num_parques }} parques, {{ barrio.num_edificios }} edificios residenciales.
+                {% if barrio.datos_presidente %}
+                    <br>Presidente: {{ barrio.datos_presidente.nickname }} (Cédula: {{ barrio.datos_presidente.cedula }}, Profesión: {{ barrio.datos_presidente.profesion }})
+                {% else %}
+                    <br>Presidente: No asignado
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No hay barrios registrados.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

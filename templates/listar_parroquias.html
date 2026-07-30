@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Parroquias - Ordenamiento Territorial</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'listar_parroquias' %}">Listar Parroquias</a> |
+        <a href="{% url 'listar_barrios' %}">Listar Barrios</a> |
+        <a href="{% url 'crear_parroquia' %}">Crear Parroquia</a> |
+        <a href="{% url 'crear_barrio' %}">Crear Barrio</a> |
+        <a href="/admin/">Administración</a>
+    </nav>
+    <hr>
+    
+    <h1>Listado de Parroquias</h1>
+    <ul>
+        {% for pd in parroquias_data %}
+            <li>
+                <strong>{{ pd.parroquia.nombre }}</strong> 
+                (Ubicación: {{ pd.parroquia.get_ubicacion_display }}, Tipo: {{ pd.parroquia.get_tipo_display }})
+                - <a href="{% url 'editar_parroquia' pd.parroquia.id %}">Editar</a>
+                <br>
+                <em>Total de parques en sus barrios:</em> {{ pd.total_parques }} <br>
+                <em>Profesiones de presidentes de sus barrios:</em> {{ pd.profesiones }}
+                <ul>
+                    {% for barrio in pd.barrios %}
+                        <li>{{ barrio.nombre }} (Viviendas: {{ barrio.num_viviendas }}, Parques: {{ barrio.num_parques }})</li>
+                    {% empty %}
+                        <li>No tiene barrios registrados.</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% empty %}
+            <li>No hay parroquias registradas.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
